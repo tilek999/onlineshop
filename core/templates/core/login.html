@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block page %}
+    <form method="POST">
+        {% bootstrap_form %}
+        {% bootstrap_form form %}
+        b<button class="btn btn-primary" name="login">Войти</button>
+    </form>
+{% endblock %}

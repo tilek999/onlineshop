@@ -6,6 +6,15 @@ class Product(models.Model):
     name = models.CharField(
         max_length=255, verbose_name="Название")
 
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="product",
+        verbose_name="Товар"
+    )
+
     category = models.ForeignKey(
         to="Category",
         on_delete=models.SET_NULL,

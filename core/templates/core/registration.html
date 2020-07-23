@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block page %}
+    {% if message %}
+        <h3 class="alert alert-danger">
+            {{ message }}
+        </h3>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-primary">Зарегистрироваться</button>
+    </form>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from product.models import Product, Category 
 from product.forms import ProductForm
 
@@ -47,24 +47,6 @@ def product_create(request):
     )
 
 
-
-def product_create(request):
-    if request.method == "POST":
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect(products)
-    
-    context = {}
-    context["form"] = ProductForm()
-
-    return render(
-        request,
-        "product/form.html",
-        context
-    )
-
-
 def product_edit(request, id):
     product = Product.objects.get(id=id)
 
@@ -82,3 +64,19 @@ def product_edit(request, id):
         "product/form.html",
         context
     )
+
+
+@login_required(login_url='/login/')
+def product_delete(request, id):
+    product = Product.objects.get(id=id)
+    context = {}
+
+    if product.user != request.user:
+        context["message"] = "У вас нет доступа!"
+    else:
+        product.deleted = True
+        product.save()
+        context["message"] = "Товар был удалён"
+    
+    context["type"] = "danger"
+    return render(request, "core/message.html", context)
